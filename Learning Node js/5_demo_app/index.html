@@ -9,7 +9,7 @@
         <!-- bootstrap -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"  crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js" integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/" crossorigin="anonymous"></script>
 
         <!-- jquery -->
@@ -28,6 +28,7 @@
                 <br>
                 <button id="btnSend" class="btn btn-success btn-lg" type="button">Send</button>
             </div>
+            <br>
             <div id="messages">
             </div>
         </div>
@@ -38,16 +39,34 @@
         // $(()=>{});
 
         $(()=>{
-            $('#btnSend').click(()=>{
-                var name = $('#inputName').val();
-                var message = $('#inputMessage').val();
-                showMessage(name, message);
-            })
+
+            showInitialMessages();
+            $('#btnSend').click(getAndShowMessage);
+
         });
 
-        function showMessage(name, message){
-            var element = `<h4> ${name} </h4> <p>${message}</p>`;
+        function showInitialMessages(){
+            $.get('/initialMessages', (data)=>{
+                data.forEach(showMessage);
+            });
+        }
+
+        function buildMessage(){
+            var message = {
+                from: $('#inputName').val(),
+                text: $('#inputMessage').val(),
+            }
+            return message;
+        }
+
+        function showMessage(message){
+            var element = `<h4> ${message.from} </h4> <p>${message.text}</p>`;
             $('#messages').append(element);
+        }
+
+        function getAndShowMessage() {
+            message = buildMessage();
+            showMessage(message);
         }
 
     </script>
