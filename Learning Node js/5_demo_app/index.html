@@ -44,11 +44,11 @@
         var socket = io()
 
         $(()=>{
-
             showMessages();
             $('#btnSend').click(postMessage);
-
         });
+
+        socket.on('message', showMessage);
 
         function showMessages(){
             $.get('/messages', (data)=>{
