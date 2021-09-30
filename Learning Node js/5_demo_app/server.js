@@ -3,20 +3,19 @@ var express = require('express');
 var app = express();
 
 app.use(express.static(__dirname));
+// ya no es necesario instalar body-parser
+app.use(express.json());
+app.use(express.urlencoded({extended: true}))
 
-var messages = [
-    {
-        from: 'Eduardo',
-        text: 'Hi',
-    },
-    {
-        from: 'Pedro',
-        text: 'Hi, how are you?',
-    },
-]
+var messages = []
 
-app.get('/initialMessages', (req, res)=>{
+app.get('/messages', (req, res)=>{
     res.send(messages);
+});
+
+app.post('/messages', (req, res)=>{
+    messages.push(req.body)
+    res.sendStatus(200);
 });
 
 var server = app.listen(3000, ()=>{

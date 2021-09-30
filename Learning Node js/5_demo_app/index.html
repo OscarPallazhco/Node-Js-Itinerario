@@ -40,15 +40,20 @@
 
         $(()=>{
 
-            showInitialMessages();
-            $('#btnSend').click(getAndShowMessage);
+            showMessages();
+            $('#btnSend').click(postMessage);
 
         });
 
-        function showInitialMessages(){
-            $.get('/initialMessages', (data)=>{
+        function showMessages(){
+            $.get('/messages', (data)=>{
                 data.forEach(showMessage);
             });
+        }
+
+        function postMessage(){
+            var message = buildMessage();
+            $.post('/messages', message);
         }
 
         function buildMessage(){
