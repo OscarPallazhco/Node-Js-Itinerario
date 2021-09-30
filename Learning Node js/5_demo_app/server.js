@@ -1,6 +1,8 @@
 var express = require('express');
 
 var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
 app.use(express.static(__dirname));
 // ya no es necesario instalar body-parser
@@ -18,6 +20,10 @@ app.post('/messages', (req, res)=>{
     res.sendStatus(200);
 });
 
-var server = app.listen(3000, ()=>{
+io.on('connection', (socket)=>{
+    console.log('Client', socket.id, 'is connected!');
+});
+
+var server = http.listen(3000, ()=>{
     console.log("Listening on port: ", server.address().port);
 });
