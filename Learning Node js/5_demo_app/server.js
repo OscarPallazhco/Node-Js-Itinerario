@@ -23,15 +23,21 @@ app.get('/messages', (req, res)=>{
     });
 });
 
-app.post('/messages', (req, res)=>{
-    var message = new Message(req.body);
-    message.save((err)=>{
-        if (err) {
-            res.sendStatus(500);
+app.post('/messages', async (req, res)=>{
+    try {
+        var message = new Message(req.body);
+        await message.save();
+        var censored = await Message.findOne({text: 'badword'})
+        if (censored) {
+            await Message.deleteOne({_id: censored.id});
+        }else{
+            io.emit('message', req.body);
         }
-        io.emit('message', req.body);
         res.sendStatus(200);
-    });
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
 });
 
 io.on('connection', (socket)=>{
