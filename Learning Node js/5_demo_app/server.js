@@ -11,16 +11,27 @@ app.use(express.static(__dirname));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}))
 
-var messages = []
+var Message = mongoose.model('Message', {
+    from: String,
+    text: String
+});
 
 app.get('/messages', (req, res)=>{
-    res.send(messages);
+    // se le pasa un object vacio para que devuelva todos los elementos
+    Message.find({}, (err, messages)=>{
+        res.send(messages);
+    });
 });
 
 app.post('/messages', (req, res)=>{
-    messages.push(req.body)
-    io.emit('message', req.body);
-    res.sendStatus(200);
+    var message = new Message(req.body);
+    message.save((err)=>{
+        if (err) {
+            res.sendStatus(500);
+        }
+        io.emit('message', req.body);
+        res.sendStatus(200);
+    });
 });
 
 io.on('connection', (socket)=>{
