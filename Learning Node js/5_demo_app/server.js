@@ -25,6 +25,8 @@ app.get('/messages', (req, res)=>{
 
 app.post('/messages', async (req, res)=>{
     try {
+        //poder lanzar una excepcion
+        // throw 'some error'
         var message = new Message(req.body);
         await message.save();
         var censored = await Message.findOne({text: 'badword'})
