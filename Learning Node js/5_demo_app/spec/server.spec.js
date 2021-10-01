@@ -24,3 +24,25 @@ describe('get messages', ()=>{
     });
 
 });
+
+describe('get messages from a specific user', ()=>{
+    
+    it('should get 200 status code', (done)=>{
+        request.get('http://localhost:3000/messages/eduardo', (err, res)=>{
+            expect(res.statusCode).toEqual(200);
+            done();
+        });
+    });
+    
+    it('name should be eduardo', (done)=>{
+        request.get('http://localhost:3000/messages/eduardo', (err, res)=>{
+            var messages = JSON.parse(res.body);
+            var firstMessage = messages[0];
+            if (firstMessage) {
+                expect(firstMessage.from).toEqual('eduardo');    
+            }
+            done();
+        });
+    });
+
+});

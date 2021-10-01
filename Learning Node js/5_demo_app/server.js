@@ -23,6 +23,13 @@ app.get('/messages', (req, res)=>{
     });
 });
 
+app.get('/messages/:user', (req, res)=>{
+    var userName = req.params.user;
+    Message.find({from: userName}, (err, messages)=>{
+        res.send(messages);
+    });
+});
+
 app.post('/messages', async (req, res)=>{
     try {
         //poder lanzar una excepcion
