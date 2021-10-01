@@ -1,4 +1,6 @@
+require('dotenv').config();
 var express = require('express');
+const mongoose = require('mongoose');
 
 var app = express();
 var http = require('http').Server(app);
@@ -23,6 +25,11 @@ app.post('/messages', (req, res)=>{
 
 io.on('connection', (socket)=>{
     console.log('Client', socket.id, 'is connected!');
+});
+
+const dbUrl = process.env.DB_CNN;
+mongoose.connect(dbUrl, (err) => {
+    console.log("Mongo DB connected ", err);
 });
 
 var server = http.listen(3000, ()=>{
