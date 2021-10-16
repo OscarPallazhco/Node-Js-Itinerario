@@ -1,10 +1,16 @@
 const express = require('express');
+const path = require('path');
 const app = express();
 const port = 3000;
 
+// usar el middleware static de express, toda petición al servidor 
+// pasará por este middleware
+app.use(express.static(path.join(__dirname, 'static')))
+
 app.get('/', (req, res)=>{
-    res.send('First route');
+    res.sendFile(path.join(__dirname, 'static', 'index.html'))
 });
+
 
 app.listen(port, ()=>{
     console.log(`Listening on port ${port}`);
