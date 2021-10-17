@@ -1,5 +1,7 @@
 const express = require('express');
 const path = require('path');
+const cookieSession = require('cookie-session');
+require('dotenv').config();
 
 const routes = require('./routes/routes');
 
@@ -9,6 +11,12 @@ const port = 3000;
 const STATIC_PATH = path.join(__dirname, 'static');
 const VIEWS_PATH = path.join(__dirname, 'views');
 const INDEX_PATH = path.join(__dirname, 'static', 'index.html');
+
+app.set('trust proxy', 1)
+app.use(cookieSession({
+    name: "session",
+    keys: [process.env.SESSION_KEY]
+}));
 
 app.set('view engine', 'ejs');
 app.set('views', VIEWS_PATH);
