@@ -17,7 +17,7 @@ app.set('views', VIEWS_PATH);
 // pasará por este middleware
 app.use(express.static(STATIC_PATH));
 
-app.use('/', routes());
+app.use('/', routes);
 
 
 app.listen(port, ()=>{
