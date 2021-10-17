@@ -1,6 +1,5 @@
-const express = require('express');
-
-const router = express.Router();
+const {Router} = require('express');
+const router = Router();
 
 router.get('/', (req, res)=>{
     // buscará el archivo pages/index dentro de la carpeta que se definió para views
