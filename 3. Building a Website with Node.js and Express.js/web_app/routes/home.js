@@ -9,7 +9,8 @@ const speakersService = new SpeakersService(path.join(__dirname, '..', 'data', '
 router.get('/', async (req, res)=>{
     // buscará el archivo pages/index dentro de la carpeta que se definió para views
     const topSpeakers = await speakersService.getList();
-    res.render('layout', {pageTitle: 'webPage with Express.js', template: 'index', topSpeakers});
+    const artwork = await speakersService.getAllArtwork();
+    res.render('layout', {pageTitle: 'webPage with Express.js', template: 'index', topSpeakers, artwork});
 });
 
 module.exports = router;
