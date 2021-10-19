@@ -11,3 +11,6 @@ Middlewares
         app.use(path, callback);  
         app.[get|post|put|delete|...](path, callback);  
     ![Middlewares](./screen_captures/express_routing_middlewares.jpg)
+
+app.locals  
+The app.locals object has properties that are local variables within the application.  
