@@ -23,8 +23,9 @@ router.get('/', async (req, res)=>{
     res.render('layout', {pageTitle: 'Speakers', template: 'speakers', speakers});
 });
 
-router.get('/:user', (req, res)=>{
-    res.send(`Speaker ${req.params.user}`);
+router.get('/:user', async (req, res)=>{
+    const speaker = await speakersService.getSpeaker(req.params.user);
+    res.render('layout', {pageTitle: `${req.params.user}`, template: 'speaker', speaker});
 });
 
 module.exports = router;
