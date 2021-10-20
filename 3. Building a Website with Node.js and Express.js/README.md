@@ -14,3 +14,7 @@ Middlewares
 
 app.locals  
 The app.locals object has properties that are local variables within the application.  
+
+body-parser  
+ya no se necesita instalar body-parser, ya que express ahora lo tiene por defecto  
+>app.use(express.urlencoded({extended:true}));  
