@@ -1,6 +1,7 @@
 const {Router} = require('express');
 const router = Router();
 const path = require('path');
+const {check, validationResult} = require('express-validator');
 
 // services
 const FeedbackService = require('./../services/FeedbackService');
@@ -9,15 +10,29 @@ const feedbackService = new FeedbackService(path.join(__dirname, '..', 'data', '
 router.get('/', async (req, res, next)=>{
     try {
         const feedback = await feedbackService.getList();
-        return res.render('layout', {pageTitle: 'Feedback', template: 'feedback', feedback});
+        const errors = req.session.feedback ? req.session.feedback.errors : false;
+        req.session.feedback = {};
+        return res.render('layout', {pageTitle: 'Feedback', template: 'feedback', feedback, errors});
     } catch (error) {
         return next(error);
     }
 });
 
-router.post('/', (req, res, next)=>{
+router.post('/',[
+    // escape() para que no sea contenido html ni js
+    check('name').trim().isLength({min:3}).escape().withMessage('A name is required'),
+    check('email').trim().isEmail().normalizeEmail().withMessage('A valid email is required'),
+    check('title').trim().isLength({min:3}).escape().withMessage('A title is required'),
+    check('message').trim().isLength({min:5}).escape().withMessage('A name is required'),
+], (req, res, next)=>{
     try {
-        console.log(req.body);
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            req.session.feedback = {
+                errors: errors.array()
+            };
+            return res.redirect('/feedback')
+        }
         res.send("feedback posted");
     } catch (error) {
         return next(error);
