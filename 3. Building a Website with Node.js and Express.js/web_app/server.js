@@ -22,6 +22,7 @@ app.use(cookieSession({
     keys: [process.env.SESSION_KEY]
 }));
 app.use(express.urlencoded({extended:true}));
+app.use(express.json());
 app.set('view engine', 'ejs');
 app.set('views', VIEWS_PATH);
 
