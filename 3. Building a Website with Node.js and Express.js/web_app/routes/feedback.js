@@ -9,7 +9,7 @@ const feedbackService = new FeedbackService(path.join(__dirname, '..', 'data', '
 router.get('/', async (req, res, next)=>{
     try {
         const feedback = await feedbackService.getList();
-        return res.json(feedback);
+        return res.render('layout', {pageTitle: 'Feedback', template: 'feedback', feedback});
     } catch (error) {
         return next(error);
     }
