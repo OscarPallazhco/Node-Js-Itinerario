@@ -18,16 +18,24 @@ const speakersService = new SpeakersService(path.join(__dirname, '..', 'data', '
 //     return res.json(speakers);
 // });
 
-router.get('/', async (req, res)=>{
-    const speakers = await speakersService.getList();
-    const artwork = await speakersService.getAllArtwork();
-    res.render('layout', {pageTitle: 'Speakers', template: 'speakers', speakers, artwork});
+router.get('/', async (req, res, next)=>{
+    try {
+        const speakers = await speakersService.getList();
+        const artwork = await speakersService.getAllArtwork();
+        return res.render('layout', {pageTitle: 'Speakers', template: 'speakers', speakers, artwork});
+    } catch (error) {
+        return next(error);
+    }
 });
 
-router.get('/:user', async (req, res)=>{
-    const speaker = await speakersService.getSpeaker(req.params.user);
-    const artwork = await speakersService.getArtworkForSpeaker(req.params.user);
-    res.render('layout', {pageTitle: `${req.params.user}`, template: 'speaker', speaker, artwork});
+router.get('/:user', async (req, res, next)=>{
+    try {
+        const speaker = await speakersService.getSpeaker(req.params.user);
+        const artwork = await speakersService.getArtworkForSpeaker(req.params.user);
+        return res.render('layout', {pageTitle: `${req.params.user}`, template: 'speaker', speaker, artwork});
+    } catch (error) {
+        return next(error);
+    }
 });
 
 module.exports = router;
