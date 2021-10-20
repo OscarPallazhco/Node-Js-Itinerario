@@ -11,7 +11,11 @@
                 <% }) %>
               </ul>
             </div>
-          <% } %>
+          <% } else if(locals.success){%>
+            <div class="alert alert-success">
+              <%= success %>
+            </div>
+          <% } %> 
           <form class="feedback-form" method="post" action="/feedback/">
             <div class="form-group">
               <label for="feedback-form-name">Name</label>
