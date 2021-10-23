@@ -24,7 +24,12 @@ class MongoBackend {
     return this.client;
   }
 
-  async disconnect() {}
+  async disconnect() {
+    if (this.client) {
+      return this.client.close();
+    }
+    return false;
+  }
 
   async insert() {}
 
@@ -33,13 +38,20 @@ class MongoBackend {
   async max() {
     console.info('Connection to MongoDB');
     console.time('mongodb-connect');
-    const client = await this.connect();
-    if (client.isConnected()) {
+    try {
+      await this.connect();
       console.info('Connected to MongoDB');
-    }else{
+    } catch (error) {
       console.info('Fail to connected to MongoDB');
+      console.log(error);
     }
     console.timeEnd('mongodb-connect');
+
+    console.info('Disconnecting from MongoDB');
+    console.time('mongodb-disconnect');
+    await this.disconnect();
+    console.timeEnd('mongodb-disconnect');
+
   }
 }
 
